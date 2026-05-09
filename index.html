@@ -51,7 +51,9 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
-            padding-bottom: 20px;
+            /* 预留底部悬浮 Dock 的空间，避免遮挡内容（含 iPhone 安全区） */
+            padding-bottom: calc(20px + 110px);
+            padding-bottom: calc(20px + 110px + env(safe-area-inset-bottom));
         }
 
         /* ===== 背景氛围 ===== */
@@ -184,11 +186,16 @@
         font-size: 44px;
         letter-spacing: 2px;
     }
-}       .hero-title .highlight {
+}
+        .hero-title .highlight {
             background: linear-gradient(120deg, var(--primary), #00c78c);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        /* 超小屏进一步缩小标题字号，避免单行溢出 */
+        @media (max-width: 360px) {
+            .hero-title { font-size: 18px; }
         }
         .hero-subtitle {
             font-size: 18px;
@@ -774,6 +781,7 @@
         .sp-toast {
             position: fixed;
             bottom: 100px;
+            bottom: calc(100px + env(safe-area-inset-bottom));
             left: 20px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -844,6 +852,7 @@
         .dock-nav {
             position: fixed;
             bottom: 20px;
+            bottom: calc(20px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
             width: calc(100% - 40px);
@@ -947,9 +956,7 @@
 
         <!-- 视频区域 -->
         <div class="video-container fade-up" style="transition-delay: 0.4s;">
-            <video src="http://crcdn.ydstatic.com/xuetang/courseop/697734569_260427_162321.mp4" controls playsinline poster="	
-	
-https://oimagea7.ydstatic.com/image?id=8841591054842339377&product=xue"></video>
+            <video src="http://crcdn.ydstatic.com/xuetang/courseop/697734569_260427_162321.mp4" controls playsinline preload="none" poster="https://oimagea7.ydstatic.com/image?id=8841591054842339377&product=xue"></video>
             <!-- 营销组件：播放量标签 -->
             <div class="video-stats">▶ <span>215.4W</span> 次播放</div>
             <!-- 营销组件：高分伪弹幕 -->
@@ -1012,18 +1019,14 @@ https://oimagea7.ydstatic.com/image?id=8841591054842339377&product=xue"></video>
                         <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=-3148238012240585045&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb4.ydstatic.com/image?id=2646512883274723859&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好评"></div>
-                        <div class="review-card"><img src="	
-https://oimageb3.ydstatic.com/image?id=4487860763827429714&product=xue" alt="好评"></div>
+                        <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=4487860763827429714&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=-3148238012240585045&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb4.ydstatic.com/image?id=2646512883274723859&product=xue" alt="好评"></div>
-                        <div class="review-card"><img src="	
-https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好评"></div>
-                        <div class="review-card"><img src="	
-https://oimageb3.ydstatic.com/image?id=4487860763827429714&product=xue" alt="好评"></div>
+                        <div class="review-card"><img src="https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好评"></div>
+                        <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=4487860763827429714&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=-3148238012240585045&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb4.ydstatic.com/image?id=2646512883274723859&product=xue" alt="好评"></div>
-                        <div class="review-card"><img src="	
-https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好评"></div>
+                        <div class="review-card"><img src="https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好评"></div>
                         <div class="review-card"><img src="https://oimageb3.ydstatic.com/image?id=4487860763827429714&product=xue" alt="好评"></div>
                     </div>
 
@@ -1210,8 +1213,7 @@ https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好�
 
     <!-- App级悬浮 Dock 导航 -->
     <div class="dock-nav" id="dockNav">
-        <a href="http://ytiny.cn/SRQAPw
-" target="_blank" class="dock-item">
+        <a href="http://ytiny.cn/SRQAPw" target="_blank" class="dock-item">
             <span class="dock-icon">🎁</span>
             <span>0元试听</span>
         </a>
@@ -1236,23 +1238,35 @@ https://oimagea2.ydstatic.com/image?id=999644723570436977&product=xue" alt="好�
 
     <script>
         // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        (function initScrollAnimations() {
+            const els = document.querySelectorAll('.fade-up');
+            if (!els.length) return;
+
+            // 兼容：极老旧浏览器没有 IntersectionObserver 时，直接展示内容
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(el => el.classList.add('in-view'));
+                return;
+            }
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            els.forEach(el => observer.observe(el));
+        })();
 
         // Smooth scroll to pricing area
         function scrollToPricing() {
             const pricingArea = document.getElementById('pricingArea');
+            if (!pricingArea) return;
             const y = pricingArea.getBoundingClientRect().top + window.scrollY - 40;
             window.scrollTo({ top: y, behavior: 'smooth' });
         }
